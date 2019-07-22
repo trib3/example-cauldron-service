@@ -12,10 +12,10 @@ class ExampleServiceModule : TribeApplicationModule() {
     override fun configure() {
         install(ExamplePersistenceModule())
 
-        graphqlPackagesBinder().addBinding().toInstance("com.trib3.example.api")
-        graphqlPackagesBinder().addBinding().toInstance("com.trib3.example.server.graphql")
+        graphQLPackagesBinder().addBinding().toInstance("com.trib3.example.api")
+        graphQLPackagesBinder().addBinding().toInstance("com.trib3.example.server.graphql")
 
-        graphqlQueriesBinder().addBinding().to<Query>()
-        graphqlMutationsBinder().addBinding().to<Mutation>()
+        graphQLQueriesBinder().addBinding().to<Query>()
+        graphQLMutationsBinder().addBinding().to<Mutation>()
     }
 }
