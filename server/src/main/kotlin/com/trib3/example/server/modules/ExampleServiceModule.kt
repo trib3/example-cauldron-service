@@ -3,6 +3,7 @@ package com.trib3.example.server.modules
 import com.trib3.example.persistence.modules.ExamplePersistenceModule
 import com.trib3.example.server.graphql.Mutation
 import com.trib3.example.server.graphql.Query
+import com.trib3.example.server.graphql.Subscription
 import com.trib3.server.modules.TribeApplicationModule
 
 /**
@@ -17,5 +18,6 @@ class ExampleServiceModule : TribeApplicationModule() {
 
         graphQLQueriesBinder().addBinding().to<Query>()
         graphQLMutationsBinder().addBinding().to<Mutation>()
+        graphQLSubscriptionsBinder().addBinding().to<Subscription>()
     }
 }

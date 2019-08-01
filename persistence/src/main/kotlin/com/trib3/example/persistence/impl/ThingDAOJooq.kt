@@ -7,8 +7,8 @@ import com.trib3.example.persistence.impl.jooq.Tables
 import com.trib3.example.persistence.impl.jooq.tables.records.ThingsRecord
 import mu.KotlinLogging
 import org.jooq.DSLContext
+import java.util.stream.Stream
 import javax.inject.Inject
-import kotlin.streams.toList
 
 private val log = KotlinLogging.logger { }
 
@@ -49,6 +49,11 @@ open class ThingDAOJooq
 
     @Timed
     override fun all(): List<Thing> {
-        return ctx.select().from(Tables.THINGS).fetchStreamInto(Thing::class.java).toList()
+        return ctx.select().from(Tables.THINGS).fetchInto(Thing::class.java)
+    }
+
+    @Timed
+    override fun stream(): Stream<Thing> {
+        return ctx.select().from(Tables.THINGS).fetchSize(1000).fetchStreamInto(Thing::class.java)
     }
 }

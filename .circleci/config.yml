@@ -27,7 +27,7 @@ jobs:
               NEW_PROJECT_VERSION=${BASE_VERSION}-${CIRCLE_BRANCH}-SNAPSHOT
             fi
             mvn versions:set -DgenerateBackupPoms=false -DnewVersion=${NEW_PROJECT_VERSION}
-      - run: mvn install
+      - run: mvn install -U
       - save_cache:
           paths:
             - ~/.m2
@@ -88,7 +88,7 @@ jobs:
             CURRENT_VERSION=$(ls ~/jars/server-*-elasticbeanstalk.zip | sed 's/^.*jars\/server-\(.*\)-elasticbeanstalk\.zip$/\1/')
             RELEASE_NOTES=$(cat ~/jars/release-notes.txt)
             if [ "${GITHUB_AUTH_TOKEN}" != "" -a "${RELEASE_NOTES}" != "" ]; then
-              curl -H "Authorization: bearer ${GITHUB_AUTH_TOKEN}" -X POST "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/releases" -X POST -d "{\"tag_name\":\"${CURRENT_VERSION}\", \"target_commitish\":\"${CIRCLE_SHA1}\", \"body\": \"${RELEASE_NOTES}\"}"
+              curl -H "Authorization: bearer ${GITHUB_AUTH_TOKEN}" -X POST "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/releases" -X POST -d "{\"tag_name\":\"${CURRENT_VERSION}\", \"name\":\"${CURRENT_VERSION}\", \"target_commitish\":\"${CIRCLE_SHA1}\", \"body\": \"${RELEASE_NOTES}\"}"
             fi
 
 workflows:

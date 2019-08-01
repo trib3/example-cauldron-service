@@ -9,6 +9,7 @@ import com.trib3.db.DAOTestBase
 import com.trib3.example.api.models.Thing
 import org.testng.annotations.BeforeClass
 import org.testng.annotations.Test
+import kotlin.streams.toList
 
 /**
  * Test the ThingDAO
@@ -35,10 +36,14 @@ class ThingDAOTest : DAOTestBase() {
         }
         val updateThing = Thing(1, "william")
         dao.save(updateThing)
-        assertThat(dao.all().map { it.name }).all {
-            contains(updateThing.name)
-            doesNotContain(thing.name)
-            contains(nextThing.name)
+        dao.stream().use { stream ->
+            for (list in listOf(stream.toList(), dao.all())) {
+                assertThat(list.map { it.name }).all {
+                    contains(updateThing.name)
+                    doesNotContain(thing.name)
+                    contains(nextThing.name)
+                }
+            }
         }
     }
 }
