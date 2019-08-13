@@ -5,7 +5,8 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isInstanceOf
 import com.trib3.example.server.graphql.Query
-import com.trib3.server.modules.TribeApplicationModule
+import com.trib3.graphql.modules.GraphQLApplicationModule.Companion.GRAPHQL_PACKAGES_BIND_NAME
+import com.trib3.graphql.modules.GraphQLApplicationModule.Companion.GRAPHQL_QUERIES_BIND_NAME
 import org.testng.annotations.Guice
 import org.testng.annotations.Test
 import javax.inject.Inject
@@ -14,9 +15,9 @@ import javax.inject.Named
 @Guice(modules = [ExampleServiceModule::class])
 class ExampleServiceModuleTest
 @Inject constructor(
-    @Named(TribeApplicationModule.GRAPHQL_PACKAGES_BIND_NAME)
+    @Named(GRAPHQL_PACKAGES_BIND_NAME)
     val packages: Set<@JvmSuppressWildcards String>,
-    @Named(TribeApplicationModule.GRAPHQL_QUERIES_BIND_NAME)
+    @Named(GRAPHQL_QUERIES_BIND_NAME)
     val queries: Set<@JvmSuppressWildcards Any>
 ) {
     @Test

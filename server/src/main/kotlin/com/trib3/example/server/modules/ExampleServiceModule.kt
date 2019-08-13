@@ -4,13 +4,13 @@ import com.trib3.example.persistence.modules.ExamplePersistenceModule
 import com.trib3.example.server.graphql.Mutation
 import com.trib3.example.server.graphql.Query
 import com.trib3.example.server.graphql.Subscription
-import com.trib3.server.modules.TribeApplicationModule
+import com.trib3.graphql.modules.GraphQLApplicationModule
 
 /**
  * Binds this service's resources
  */
-class ExampleServiceModule : TribeApplicationModule() {
-    override fun configure() {
+class ExampleServiceModule : GraphQLApplicationModule() {
+    override fun configureApplication() {
         install(ExamplePersistenceModule())
 
         graphQLPackagesBinder().addBinding().toInstance("com.trib3.example.api")

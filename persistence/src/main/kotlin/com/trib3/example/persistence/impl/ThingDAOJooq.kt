@@ -5,10 +5,10 @@ import com.trib3.example.api.models.Thing
 import com.trib3.example.persistence.api.ThingDAO
 import com.trib3.example.persistence.impl.jooq.Tables
 import com.trib3.example.persistence.impl.jooq.tables.records.ThingsRecord
-import mu.KotlinLogging
-import org.jooq.DSLContext
 import java.util.stream.Stream
 import javax.inject.Inject
+import mu.KotlinLogging
+import org.jooq.DSLContext
 
 private val log = KotlinLogging.logger { }
 

@@ -4,9 +4,8 @@ import com.coxautodev.graphql.tools.GraphQLQueryResolver
 import com.trib3.example.api.models.Thing
 import com.trib3.example.persistence.api.ThingDAO
 import io.reactivex.rxkotlin.toFlowable
-import org.reactivestreams.Publisher
-
 import javax.inject.Inject
+import org.reactivestreams.Publisher
 
 class Subscription
 @Inject
