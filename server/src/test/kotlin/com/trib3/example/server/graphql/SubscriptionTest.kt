@@ -4,7 +4,9 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.trib3.example.api.models.Thing
 import com.trib3.example.persistence.api.ThingDAO
-import io.reactivex.subscribers.TestSubscriber
+import kotlinx.coroutines.flow.toCollection
+import kotlinx.coroutines.reactive.asFlow
+import kotlinx.coroutines.runBlocking
 import org.easymock.EasyMock
 import org.testng.annotations.Test
 
@@ -21,9 +23,10 @@ class SubscriptionTest {
         EasyMock.replay(mockDAO)
         val query = Subscription(mockDAO)
         val result = query.subscribe()
-        val subscriber = TestSubscriber<Thing>()
-        result.subscribe(subscriber)
-        subscriber.await()
-        assertThat(subscriber.values()).isEqualTo(mockData)
+        val testData = mutableListOf<Thing>()
+        runBlocking {
+            result.asFlow().toCollection(testData)
+        }
+        assertThat(testData).isEqualTo(mockData)
     }
 }

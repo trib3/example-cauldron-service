@@ -3,10 +3,14 @@ package com.trib3.example.server.graphql
 import com.coxautodev.graphql.tools.GraphQLQueryResolver
 import com.trib3.example.api.models.Thing
 import com.trib3.example.persistence.api.ThingDAO
-import io.reactivex.rxkotlin.toFlowable
 import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.reactive.asPublisher
 import org.reactivestreams.Publisher
 
+@UseExperimental(ExperimentalCoroutinesApi::class)
 class Subscription
 @Inject
 constructor(
@@ -14,7 +18,8 @@ constructor(
 ) : GraphQLQueryResolver {
     fun subscribe(): Publisher<Thing> {
         val stream = thingDAO.stream()
-        return Iterable { stream.iterator() }.toFlowable()
-            .doFinally(stream::close)
+        return stream.iterator().asFlow()
+            .onCompletion { stream.close() }
+            .asPublisher()
     }
 }

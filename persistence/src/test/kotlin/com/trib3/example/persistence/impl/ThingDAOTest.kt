@@ -7,9 +7,9 @@ import assertk.assertions.doesNotContain
 import assertk.assertions.isEqualTo
 import com.trib3.example.api.models.Thing
 import com.trib3.testing.db.DAOTestBase
+import kotlin.streams.toList
 import org.testng.annotations.BeforeClass
 import org.testng.annotations.Test
-import kotlin.streams.toList
 
 /**
  * Test the ThingDAO

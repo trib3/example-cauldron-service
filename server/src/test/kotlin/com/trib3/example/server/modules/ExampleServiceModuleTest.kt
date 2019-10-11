@@ -7,10 +7,10 @@ import assertk.assertions.isInstanceOf
 import com.trib3.example.server.graphql.Query
 import com.trib3.graphql.modules.GraphQLApplicationModule.Companion.GRAPHQL_PACKAGES_BIND_NAME
 import com.trib3.graphql.modules.GraphQLApplicationModule.Companion.GRAPHQL_QUERIES_BIND_NAME
-import org.testng.annotations.Guice
-import org.testng.annotations.Test
 import javax.inject.Inject
 import javax.inject.Named
+import org.testng.annotations.Guice
+import org.testng.annotations.Test
 
 @Guice(modules = [ExampleServiceModule::class])
 class ExampleServiceModuleTest
