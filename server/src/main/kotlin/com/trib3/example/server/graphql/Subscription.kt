@@ -4,10 +4,11 @@ import com.coxautodev.graphql.tools.GraphQLQueryResolver
 import com.trib3.example.api.models.Thing
 import com.trib3.example.persistence.api.ThingDAO
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.reactive.asPublisher
+import kotlinx.coroutines.stream.consumeAsFlow
 import org.reactivestreams.Publisher
 
 @UseExperimental(ExperimentalCoroutinesApi::class)
@@ -18,8 +19,8 @@ constructor(
 ) : GraphQLQueryResolver {
     fun subscribe(): Publisher<Thing> {
         val stream = thingDAO.stream()
-        return stream.iterator().asFlow()
-            .onCompletion { stream.close() }
+        return stream.consumeAsFlow()
+            .flowOn(Dispatchers.IO)
             .asPublisher()
     }
 }
