@@ -1,12 +1,17 @@
 package com.trib3.example.persistence.impl
 
 import com.codahale.metrics.annotation.Timed
+import com.trib3.db.jooqext.consumeAsFlow
 import com.trib3.example.api.models.Thing
 import com.trib3.example.persistence.api.ThingDAO
 import com.trib3.example.persistence.impl.jooq.Tables
 import com.trib3.example.persistence.impl.jooq.tables.records.ThingsRecord
-import java.util.stream.Stream
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import mu.KotlinLogging
 import org.jooq.DSLContext
 
@@ -52,8 +57,11 @@ open class ThingDAOJooq
         return ctx.select().from(Tables.THINGS).fetchInto(Thing::class.java)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Timed
-    override fun stream(): Stream<Thing> {
-        return ctx.select().from(Tables.THINGS).fetchSize(1000).fetchStreamInto(Thing::class.java)
+    override fun allFlow(): Flow<Thing> {
+        return ctx.select().from(Tables.THINGS).fetchSize(1000).consumeAsFlow(Dispatchers.IO)
+            .map { it.into(Thing::class.java) }
+            .flowOn(Dispatchers.IO)
     }
 }

@@ -7,7 +7,8 @@ import assertk.assertions.doesNotContain
 import assertk.assertions.isEqualTo
 import com.trib3.example.api.models.Thing
 import com.trib3.testing.db.DAOTestBase
-import kotlin.streams.toList
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.runBlocking
 import org.testng.annotations.BeforeClass
 import org.testng.annotations.Test
 
@@ -36,13 +37,17 @@ class ThingDAOTest : DAOTestBase() {
         }
         val updateThing = Thing(1, "william")
         dao.save(updateThing)
-        dao.stream().use { stream ->
-            for (list in listOf(stream.toList(), dao.all())) {
-                assertThat(list.map { it.name }).all {
-                    contains(updateThing.name)
-                    doesNotContain(thing.name)
-                    contains(nextThing.name)
-                }
+        val collectedFlow = runBlocking {
+            dao.allFlow().toList()
+        }
+        for (list in listOf(
+            collectedFlow,
+            dao.all()
+        )) {
+            assertThat(list.map { it.name }).all {
+                contains(updateThing.name)
+                doesNotContain(thing.name)
+                contains(nextThing.name)
             }
         }
     }
