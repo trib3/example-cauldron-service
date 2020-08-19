@@ -40,10 +40,12 @@ class ThingDAOTest : DAOTestBase() {
         val collectedFlow = runBlocking {
             dao.allFlow().toList()
         }
-        for (list in listOf(
-            collectedFlow,
-            dao.all()
-        )) {
+        for (
+            list in listOf(
+                collectedFlow,
+                dao.all()
+            )
+        ) {
             assertThat(list.map { it.name }).all {
                 contains(updateThing.name)
                 doesNotContain(thing.name)
