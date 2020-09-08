@@ -21,7 +21,7 @@ jobs:
           name: Set Maven Version
           command: |
             BASE_VERSION=$(mvn -q  -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec|sed 's/-SNAPSHOT.*//')
-            if [ "$CIRCLE_BRANCH" = "master" ]; then
+            if [ "$CIRCLE_BRANCH" = "main" ]; then
               NEW_PROJECT_VERSION=${BASE_VERSION}.${CIRCLE_BUILD_NUM}
             else
               NEW_PROJECT_VERSION=${BASE_VERSION}-${CIRCLE_BRANCH}-SNAPSHOT
@@ -57,7 +57,7 @@ jobs:
             PREVIOUS_VERSION=$(git tag | sort -V | tail -n 1)
             git log --pretty=format:'* %s\r\n' ${PREVIOUS_VERSION}..HEAD | sed 's/"/\\"/g'|tr -d '\n' > ~/jars/release-notes.txt
             RELEASE_NOTES=$(cat ~/jars/release-notes.txt)
-            if [ "${CIRCLE_BRANCH}" = "master" -a "${SLACK_NOTIFICATION_WEBHOOK}" != "" ]; then
+            if [ "${CIRCLE_BRANCH}" = "main" -a "${SLACK_NOTIFICATION_WEBHOOK}" != "" ]; then
               WORKFLOW_URL="https://circleci.com/workflow-run/${CIRCLE_WORKFLOW_ID}"
               curl -X POST -d "payload={\"attachments\":[{ \"mrkdwn_in\":[\"text\"], \"color\":\"#439FE0\", \"fallback\":\"Deploy Ready Notification\", \"pretext\":\"Deploy Ready Notification\", \"text\":\"*Project* \`${CIRCLE_PROJECT_REPONAME}\`\n*Branch* \`${CIRCLE_BRANCH}\`\n*Version* \`${CURRENT_VERSION}\`\nClick <$WORKFLOW_URL|here> to approve the deploy\nRelease Notes:\n\`\`\`\n${RELEASE_NOTES}\n\`\`\`\"}]}" ${SLACK_NOTIFICATION_WEBHOOK}
             fi
@@ -103,11 +103,11 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
       - deploy:
           requires:
             - hold
           filters:
             branches:
               only:
-                - master
+                - main
