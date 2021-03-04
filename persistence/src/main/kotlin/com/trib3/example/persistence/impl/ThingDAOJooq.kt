@@ -24,13 +24,13 @@ open class ThingDAOJooq
 @Inject constructor(
     private val ctx: DSLContext
 ) : ThingDAO {
-    private fun getRecord(dsl: DSLContext, id: Int): ThingsRecord {
+    private fun getRecord(dsl: DSLContext, id: Int): ThingsRecord? {
         return dsl.selectFrom(Tables.THINGS).where(Tables.THINGS.ID.eq(id)).fetchOne()
     }
 
     @Timed
     override fun get(id: Int): Thing? {
-        return getRecord(ctx, id).into(Thing::class.java)
+        return getRecord(ctx, id)?.into(Thing::class.java)
     }
 
     @Timed
@@ -44,8 +44,15 @@ open class ThingDAOJooq
                 )
             } else {
                 val existing = getRecord(config.dsl(), thingId)
-                existing.from(thing)
-                existing
+                if (existing != null) {
+                    existing.from(thing)
+                    existing
+                } else {
+                    config.dsl().newRecord(
+                        Tables.THINGS,
+                        thing
+                    )
+                }
             }
             record.store()
             record.into(Thing::class.java)

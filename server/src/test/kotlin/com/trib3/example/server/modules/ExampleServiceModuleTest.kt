@@ -16,9 +16,9 @@ import org.testng.annotations.Test
 class ExampleServiceModuleTest
 @Inject constructor(
     @Named(GRAPHQL_PACKAGES_BIND_NAME)
-    val packages: Set<@JvmSuppressWildcards String>,
+    val packages: Set<String>,
     @Named(GRAPHQL_QUERIES_BIND_NAME)
-    val queries: Set<@JvmSuppressWildcards Any>
+    val queries: Set<Any>
 ) {
     @Test
     fun testResources() {
