@@ -25,6 +25,12 @@
 
         <dependency>
             <groupId>com.trib3</groupId>
+            <artifactId>server</artifactId>
+            <version>${version.leakycauldron}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.trib3</groupId>
             <artifactId>graphql</artifactId>
             <version>${version.leakycauldron}</version>
         </dependency>
