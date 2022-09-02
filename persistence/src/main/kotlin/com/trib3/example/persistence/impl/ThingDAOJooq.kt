@@ -6,8 +6,8 @@ import com.trib3.example.api.models.Thing
 import com.trib3.example.persistence.api.ThingDAO
 import com.trib3.example.persistence.impl.jooq.Tables
 import com.trib3.example.persistence.impl.jooq.tables.records.ThingsRecord
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -18,9 +18,15 @@ import javax.inject.Inject
  * DAO implementation for Things
  */
 open class ThingDAOJooq
-@Inject constructor(
-    private val ctx: DSLContext
+constructor(
+    private val ctx: DSLContext,
+    private val dispatcher: CoroutineDispatcher
 ) : ThingDAO {
+    @Suppress("InjectDispatcher")
+    // https://github.com/detekt/detekt/issues/5225
+    @Inject
+    constructor(ctx: DSLContext) : this(ctx, Dispatchers.IO)
+
     private fun getRecord(dsl: DSLContext, id: Int): ThingsRecord? {
         return dsl.selectFrom(Tables.THINGS).where(Tables.THINGS.ID.eq(id)).fetchOne()
     }
@@ -61,11 +67,10 @@ open class ThingDAOJooq
         return ctx.select().from(Tables.THINGS).fetchInto(Thing::class.java)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Timed
     override fun allFlow(): Flow<Thing> {
-        return ctx.select().from(Tables.THINGS).consumeAsFlow(Dispatchers.IO)
+        return ctx.select().from(Tables.THINGS).consumeAsFlow(dispatcher)
             .map { it.into(Thing::class.java) }
-            .flowOn(Dispatchers.IO)
+            .flowOn(dispatcher)
     }
 }

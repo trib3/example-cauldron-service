@@ -36,6 +36,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.expediagroup</groupId>
+            <artifactId>graphql-kotlin-server</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.trib3.example</groupId>
             <artifactId>persistence</artifactId>
             <version>${project.version}</version>
@@ -59,8 +64,8 @@
             <artifactId>guice</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
+            <groupId>jakarta.inject</groupId>
+            <artifactId>jakarta.inject-api</artifactId>
         </dependency>
         <dependency>
             <groupId>dev.misfitlabs.kotlinguice4</groupId>
@@ -76,10 +81,6 @@
         </dependency>
 
         <!-- graphQL -->
-        <dependency>
-            <groupId>com.graphql-java</groupId>
-            <artifactId>graphql-java-tools</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlinx</groupId>
             <artifactId>kotlinx-coroutines-core-jvm</artifactId>

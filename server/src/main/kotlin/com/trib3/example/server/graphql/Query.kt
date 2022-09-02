@@ -1,6 +1,5 @@
 package com.trib3.example.server.graphql
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver
 import com.trib3.example.api.models.Thing
 import com.trib3.example.persistence.api.ThingDAO
 import javax.inject.Inject
@@ -10,7 +9,7 @@ import javax.inject.Inject
  */
 class Query @Inject constructor(
     private val thingDAO: ThingDAO
-) : GraphQLQueryResolver {
+) : com.expediagroup.graphql.server.operations.Query {
     fun thing(id: Int): Thing? {
         return thingDAO.get(id)
     }

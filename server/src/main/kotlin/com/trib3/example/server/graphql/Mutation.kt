@@ -1,6 +1,5 @@
 package com.trib3.example.server.graphql
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver
 import com.trib3.example.api.models.Thing
 import com.trib3.example.persistence.api.ThingDAO
 import javax.inject.Inject
@@ -10,7 +9,7 @@ import javax.inject.Inject
  */
 class Mutation @Inject constructor(
     private val thingDAO: ThingDAO
-) : GraphQLQueryResolver {
+) : com.expediagroup.graphql.server.operations.Mutation {
     fun thing(thing: Thing): Thing {
         return thingDAO.save(thing)
     }
